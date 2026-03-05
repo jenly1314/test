@@ -9,7 +9,7 @@ on:
         type: boolean
         default: false
       version-name:
-        description: 'Version name.'
+        description: 'Version name (optional)'
         required: false
         type: string
       release-body:

@@ -1,0 +1,44 @@
+name: Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: 'Publish to Maven Central'
+        required: true
+        type: boolean
+        default: false
+      version-name:
+        description: 'Version name (optional, defaults to gradle.properties)'
+        required: false
+        type: string
+      release-body:
+        description: 'Release notes.'
+        required: true
+        type: string
+
+jobs:
+  publish:
+    if: ${{ github.event.inputs.publish == true }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: jenly1314/actions/.github/workflows/reusable-publish.yml@v2
+        with:
+          java-version-file: '.github/workflows/.java-version'
+        secrets:
+          maven-username: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          maven-password: ${{ secrets.MAVEN_CENTRAL_PASSPHRASE }}
+          gpg-secret-key: ${{ secrets.GPG_SECRET_KEY }}
+          gpg-secret-passphrase: ${{ secrets.GPG_SECRET_PASSWORD }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [publish]
+    if: ${{ (github.event.inputs.publish == true && needs.publish.result == 'success') || github.event.inputs.publish == false }}
+    steps:
+      - uses: jenly1314/actions/.github/workflows/reusable-release.yml@v2
+        with:
+          version-name: ${{ github.event.inputs.version-name }}
+          release-body: ${{ github.event.inputs.release-body }}
+        secrets:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

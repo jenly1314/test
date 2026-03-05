@@ -4,12 +4,12 @@ on:
   workflow_dispatch:
     inputs:
       publish:
-        description: 'Publish to Maven Central'
+        description: 'Publish to Maven Central.'
         required: true
         type: boolean
         default: false
       version-name:
-        description: 'Version name (optional, defaults to gradle.properties)'
+        description: 'Version name.'
         required: false
         type: string
       release-body:
@@ -31,9 +31,8 @@ jobs:
 
   release:
     needs: [publish]
-    if: ${{ (github.event.inputs.publish == true && needs.publish.result == 'success') || github.event.inputs.publish == false }}
+    if: ${{ github.event.inputs.publish == false || (github.event.inputs.publish == true && needs.publish.result == 'success') }}
     uses: jenly1314/actions/.github/workflows/reusable-release.yml@main
     with:
       version-name: ${{ github.event.inputs.version-name }}
       release-body: ${{ github.event.inputs.release-body }}
-

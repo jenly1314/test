@@ -30,14 +30,7 @@ jobs:
       gpg-secret-passphrase: ${{ secrets.GPG_SECRET_PASSWORD }}
 
   release:
-    if: ${{ github.event.inputs.publish != 'true' }}
-    uses: jenly1314/actions/.github/workflows/reusable-release.yml@main
-    with:
-      version-name: ${{ github.event.inputs.version-name }}
-      release-body: ${{ github.event.inputs.release-body }}
-
-  release-after-publish:
-    if: ${{ github.event.inputs.publish == 'true' }}
+    if: ${{ github.event.inputs.publish == 'false' || success() }}
     needs: [publish]
     uses: jenly1314/actions/.github/workflows/reusable-release.yml@main
     with:

@@ -19,7 +19,7 @@ on:
 
 jobs:
   publish:
-    if: ${{ github.event.inputs.publish == true }}
+    if: ${{ github.event.inputs.publish == 'true' }}
     uses: jenly1314/actions/.github/workflows/reusable-publish.yml@main
     with:
       java-version-file: '.github/workflows/.java-version'
@@ -30,8 +30,8 @@ jobs:
       gpg-secret-passphrase: ${{ secrets.GPG_SECRET_PASSWORD }}
 
   release:
-#    needs: [publish]
-#    if: ${{ github.event.inputs.publish == false || (github.event.inputs.publish == true && needs.publish.result == 'success') }}
+    needs: [publish]
+    if: ${{ github.event.inputs.publish != 'true' || (github.event.inputs.publish == 'true' && needs.publish.result == 'success') }}
     uses: jenly1314/actions/.github/workflows/reusable-release.yml@main
     with:
       version-name: ${{ github.event.inputs.version-name }}

@@ -3,19 +3,19 @@ name: Release
 on:
   workflow_dispatch:
     inputs:
+      publish:
+        description: 'Publish to Maven Central.'
+        required: true
+        type: boolean
+        default: false
       version-name:
         description: 'Version name.'
         required: false
         type: string
       release-body:
         description: 'Release notes.'
-        required: true
+        required: false
         type: string
-      publish:
-        description: 'Publish to Maven Central.'
-        required: true
-        type: boolean
-        default: false
 
 jobs:
   publish:

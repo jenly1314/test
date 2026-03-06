@@ -30,7 +30,7 @@ jobs:
       gpg-secret-passphrase: ${{ secrets.GPG_SECRET_PASSWORD }}
 
   release:
-    if: ${{ needs.publish.result == 'success' || needs.publish.result == 'skipped' }}
+    if: ${{ github.event.inputs.publish == 'false' || needs.publish.result == 'success' }}
     needs: [publish]
     uses: jenly1314/actions/.github/workflows/reusable-release.yml@v2
     with:

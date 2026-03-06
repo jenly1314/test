@@ -16,18 +16,20 @@ on:
         description: 'Release notes.'
         required: false
         type: string
+      result:
+        description: 'publish result'
+        required: true
+        type: number
 
 jobs:
   publish:
+    runs-on: ubuntu-latest
     if: ${{ github.event.inputs.publish == 'true' }}
-    uses: jenly1314/actions/.github/workflows/reusable-publish.yml@v2
-    with:
-      java-version-file: '.github/workflows/.java-version'
-    secrets:
-      maven-username: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
-      maven-password: ${{ secrets.MAVEN_CENTRAL_PASSPHRASE }}
-      gpg-secret-key: ${{ secrets.GPG_SECRET_KEY }}
-      gpg-secret-passphrase: ${{ secrets.GPG_SECRET_PASSWORD }}
+    steps:
+      - id: publish
+        run: |
+          echo "Publishing..."
+          exit ${{ github.event.inputs.result }}
 
   release:
     if: ${{ github.event.inputs.publish == 'false' || success() }}

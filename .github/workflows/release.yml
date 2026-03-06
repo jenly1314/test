@@ -32,7 +32,7 @@ jobs:
           exit ${{ github.event.inputs.result }}
 
   release:
-    if: ${{ github.event.inputs.publish == 'false' || success() }}
+    if: ${{ success() }}
     needs: [publish]
     uses: jenly1314/actions/.github/workflows/reusable-release.yml@v2
     with:

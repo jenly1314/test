@@ -9,11 +9,11 @@ on:
         type: boolean
         default: false
       version-name:
-        description: 'Version name (defaults to gradle.properties)'
+        description: 'Version name.'
         required: false
         type: string
       release-body:
-        description: 'Release notes (defaults to CHANGELOG.md)'
+        description: 'Release notes.'
         required: false
         type: string
 

@@ -20,7 +20,7 @@ on:
 jobs:
   publish:
     if: ${{ github.event.inputs.publish == 'true' }}
-    uses: jenly1314/actions/.github/workflows/reusable-publish.yml@v1
+    uses: jenly1314/actions/.github/workflows/reusable-publish.yml@main
     with:
       java-version-file: '.github/workflows/.java-version'
     secrets:
@@ -32,7 +32,7 @@ jobs:
   release:
     if: ${{ github.event.inputs.publish == 'false' || success() }}
     needs: [publish]
-    uses: jenly1314/actions/.github/workflows/reusable-release.yml@v1
+    uses: jenly1314/actions/.github/workflows/reusable-release.yml@main
     with:
       version-name: ${{ github.event.inputs.version-name }}
       release-body: ${{ github.event.inputs.release-body }}
